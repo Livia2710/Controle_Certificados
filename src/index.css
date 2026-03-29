@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variáveis globais */
+:root {
+  --bg: #f3f4f6;
+  --card: #fff;
+  --text: #374151;
+  --text-strong: #111827;
+  --border: #e5e7eb;
+  --primary: #dc2626;
+  --primary-hover:#b91c1c;
+  
+
+  font-family: system-ui, "Segoue UI", Roboto, sans-serif;
+}
+
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
