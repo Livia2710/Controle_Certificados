@@ -1,5 +1,5 @@
 import Papa from "papaparse"; /*Para ler o csv */
-import html2canvas from "html2canvas";
+import JSZip from "jszip";
 import jsPDF from "jspdf";
 import { useState, useEffect } from 'react';
 import Logo from "./assets/logo.png";
@@ -127,25 +127,89 @@ export  default function App() {
 });
 
 const gerarPDF = async () => {
-  const elemento = document.getElementById("certificado");
+  const JSZip = (await import("jszip")).default;
+  const zip = new JSZip();
 
-  const canvas = await html2canvas(elemento);
-  const imgData = canvas.toDataURL("image/png");
+  const centerX = 148.5; // centro horizontal
 
-  const pdf = new jsPDF({
-    orientation: "landscape",
-    unit: "px",
-    format: [canvas.width, canvas.height]
-  });
+  for (const nome of selecionados) {
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4"
+    });
 
-  pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    // FUNDO
+    if (template === "dark") {
+      pdf.setFillColor(0, 0, 0);
+      pdf.rect(0, 0, 297, 210, "F");
+      pdf.setTextColor(255, 255, 255);
+    } else {
+      pdf.setTextColor(0, 0, 0);
+    }
 
-  // 👇 gera um PDF para cada aluno selecionado
-  selecionados.forEach((nome) => {
-    pdf.save(`certificado-${nome}.pdf`);
-  });
+    // LINHA TOPO
+    pdf.setFillColor(220, 38, 38);
+    pdf.rect(0, 0, 297, 10, "F");
+
+    // LOGO CENTRALIZADA
+    const img = new Image();
+    img.src = template === "dark" ? LogoDark : Logo;
+    pdf.addImage(img, "PNG", centerX - 25, 15, 50, 30);
+
+    // TÍTULO
+    pdf.setFont("times", "bold");
+    pdf.setFontSize(30);
+    pdf.text("Certificado", centerX, 70, { align: "center" });
+
+    // TEXTO
+    pdf.setFont("times", "normal");
+    pdf.setFontSize(14);
+    pdf.text("Certificamos que", centerX, 90, { align: "center" });
+
+    // NOME
+    pdf.setFontSize(22);
+    pdf.text(nome, centerX, 110, { align: "center" });
+
+    // TEXTO
+    pdf.setFontSize(14);
+    pdf.text("participou do projeto", centerX, 125, { align: "center" });
+
+    // PROJETO
+    pdf.setTextColor(220, 38, 38);
+    pdf.setFontSize(18);
+    pdf.text(projetoSelecionado || "Projeto", centerX, 140, { align: "center" });
+
+    // RESET COR
+    pdf.setTextColor(template === "dark" ? 255 : 0);
+
+    // CARGA HORÁRIA
+    pdf.setFontSize(14);
+    pdf.text(
+      `com carga horária de ${cargaHoraria || 0} horas`,
+      centerX,
+      155,
+      { align: "center" }
+    );
+
+    // ASSINATURA (agora visível)
+    pdf.line(100, 180, 200, 180);
+    pdf.setFontSize(10);
+    pdf.text("Instrutor Responsável", centerX, 190, { align: "center" });
+
+    // GERAR ARQUIVO
+    const blob = pdf.output("blob");
+    zip.file(`certificado-${nome}.pdf`, blob);
+  }
+
+  // GERAR ZIP
+  const content = await zip.generateAsync({ type: "blob" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(content);
+  link.download = "certificados.zip";
+  link.click();
 };
-
   return (
     /*  Responsividade em Tailwind
            sem nada = mobile
@@ -186,12 +250,13 @@ const gerarPDF = async () => {
       <div className="
            grid             
            grid-cols-1     /* mobile: 1 coluna */
-           lg:grid-cols-2  /*desktop: 2 colunas*/
+           lg:grid-cols-3  /*desktop: 2 colunas*/
            gap-6
+           items-start
       ">
         {/* CARD 1 - FILTROS */}
         <div className='bg-white rounded-xl shadow-md p-4 
-        lg:col-span-2 /*ocupa linha inteira no desktop*/'>
+        lg:col-span-3 /*ocupa linha inteira no desktop*/'>
 
           <h2 className="font-semibold mb-4">Filtros</h2>
 
@@ -242,7 +307,7 @@ const gerarPDF = async () => {
             </div>
             
             {/* CARD 2 - ALUNOS */}
-            <div className='bg-white rounded-xl shadow-md p-4'>
+            <div className='bg-white rounded-xl shadow-md p-4 lg:col-span-1 h-full'>
               <h2 className='font-semibold mb-4'>Alunos</h2>
 
               <div className="border rounded p-3 space-y-2 h-48 overflow-y-scroll">
@@ -268,15 +333,15 @@ const gerarPDF = async () => {
             </div>
 
             {/* CARD 3 - PREVIEW */}
-            <div className="bg-white rounded-xl shadow-md mt-5">
+            <div className="bg-white rounded-xl shadow-md p-4 lg:col-span-2 h-full flex flex-col">
               <h2 className='font-semibold mb-4 text-start p-4'>Pré-visualização do Certificado</h2>
 
-              <div className="flex gap-4 items-start">
+              <div className="flex flex-1 gap-4 items-center justify-center">
 
               {/* CERTIFICADO */}
               <div  className="flex-1 flex justify-center">
                 <div id="certificado" className={`
-                  w-full max-w-[300px] rounded-xl shadow p-6 text-center relative
+                  w-full max-w-[500px] aspect-[297/210] rounded-xl shadow p-6 text-center relative flex flex-col justify-center
                   ${templateStyles[template].card}
                 `}>
 
@@ -289,22 +354,22 @@ const gerarPDF = async () => {
               {/* TÍTULO */}
               <h2 className={`text-lg font-bold ${templateStyles[template].sub}`}>Certificado</h2>
 
-              <p className="text-sm text-gray-500 mt-2">Certificamos que</p>
+              <p className="text-sm mt-2">Certificamos que</p>
 
               {/* NOME */}
-              <p className={`font-semibold mt-2 ${template === "dark" ? "text-gray-300" : "text-gray-500"}`}>{selecionados.length > 0 ? selecionados[0] : "Nome do Aluno"}</p>
+              <p className={`font-semibold text-lg mt-2 ${template === "dark" ? "text-gray-300" : "text-gray-500"}`}>{selecionados.length > 0 ? selecionados[0] : "Nome do Aluno"}</p>
 
-              <p className="text-sm text-gray-500 mt-2">participou do projeto</p>
+              <p className="text-sm mt-2">participou do projeto</p>
 
               {/* PROJETO */}
               <p className=" font-medium mt-2 text-[var(--primary)]">{projetoSelecionado || "Nome do Projeto"}</p>
 
               {/* CARGA HORÁRIA */}
-              <p className="text-sm  mt-3">com carga horária de <strong>{cargaHoraria || "0"} horas</strong></p>
+              <p className="text-sm mt-3">com carga horária de <strong>{cargaHoraria || "0"} horas</strong></p>
 
               <div className="flex flex-col items-center mt-6">
             {/* LINHA */}
-            <div className={`w-40 h-[2px] mb-2 ${templateStyles[template].border}`}/>
+            <div className={`w-52 h-[2px] mb-2 ${templateStyles[template].border}`}/>
 
             {/* TEXTO */}
             <p className="text-xs text-gray-500">
@@ -337,9 +402,10 @@ const gerarPDF = async () => {
              </div>
             </div>
             
+        </div>
 
-            {/* CARD 4 - CARGA HORÁRIA */}
-            <div className="bg-white rounded-xl shadow-md p-4 mt-5 lg:col-span-2">
+         {/* CARD 4 - CARGA HORÁRIA */}
+            <div className="bg-white rounded-xl shadow-md p-4 lg:col-span-3">
               <h2 className="font-semibold mb-4">Carga Horária</h2>
 
               <input
@@ -354,7 +420,6 @@ const gerarPDF = async () => {
               Enviar Certificados
             </button>
           </div>
-        </div>
 
       </div>
       </div>
