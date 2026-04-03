@@ -3,7 +3,7 @@
 Projeto desenvolvido para facilitar o controle de horas de extensão em instituições de ensino.
 
 ## 🌐 Acesse o projeto
-[🔗 link](https://controle-certificados-peach.vercel.app/)
+[🔗 https://controle-certificados-peach.vercel.app/](https://controle-certificados-peach.vercel.app/)
 
 ---
 
