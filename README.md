@@ -3,7 +3,7 @@
 Projeto desenvolvido para facilitar o controle de horas de extensão em instituições de ensino.
 
 ## 🌐 Acesse o projeto
-[🔗 https://controle-certificados-peach.vercel.app/](https://controle-certificados-peach.vercel.app/)
+[🔗 Clique aqui para acessar o sistema ](https://controle-certificados-peach.vercel.app/)
 
 ---
 
@@ -43,6 +43,16 @@ A aplicação permite que docentes gerenciem alunos, filtrem informações e ger
 ### Backend (em desenvolvimento)
 - Node.js
 - Integração futura com envio de e-mail
+
+---
+
+## Responsividade
+
+O sistema foi desenvolvido com foco em responsividade, garantindo uma boa experiência em:
+
+- 💻 Desktop  
+- 📱 Mobile  
+- 📲 Tablet  
 
 ---
 
