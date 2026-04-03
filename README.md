@@ -1,16 +1,67 @@
-# React + Vite
+#  Sistema de Gestão de Extensão Acadêmica
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto desenvolvido para facilitar o controle de horas de extensão em instituições de ensino.
 
-Currently, two official plugins are available:
+## 🌐 Acesse o projeto
+[🔗 link](https://controle-certificados-peach.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Sobre o projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Este sistema foi criado para resolver um problema real da faculdade:  
+a ausência de um sistema para controle de horas de extensão.
 
-## Expanding the ESLint configuration
+A aplicação permite que docentes gerenciem alunos, filtrem informações e gerem certificados automaticamente.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Preview
+
+![Preview do sistema](./frontend/preview/Preview.png)
+
+---
+
+## Funcionalidades
+
+- Filtro por curso (ADS, Mecatrônica, Engenharia)
+- Busca por nome de aluno
+- Seleção de projetos de extensão
+- Escolha de template de certificado (Light/Dark)
+- Geração automática de certificado em PDF
+- Interface intuitiva para docentes
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+### Frontend
+- Vite
+- React
+- Tailwind CSS
+
+### Backend (em desenvolvimento)
+- Node.js
+- Integração futura com envio de e-mail
+
+---
+
+## ⚙️ Como funciona
+
+1. O docente filtra por curso ou busca pelo nome
+2. Seleciona o projeto de extensão
+3. Define a carga horária
+4. Escolhe o modelo de certificado
+5. O sistema gera automaticamente o certificado em PDF
+
+
+---
+
+## 📌 Status
+
+🚧 Em desenvolvimento  
+✔️ Geração de PDF funcional  
+🔄 Integração com envio de e-mail em andamento  
+
+---
+
