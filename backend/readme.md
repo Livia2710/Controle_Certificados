@@ -14,7 +14,7 @@ docker compose up --build -d
 
 # Importante:
 Ainda em ambiente de dev, os dois containers escutam as seguintes portas:
-- Python API -> http://localhost:5000
+- Node API -> http://localhost:5000
 - MySQL DB -> http://localhost:3306
 
 Se for conectar com o MySQL usando o MySQL workbanch ou o DBeaver, tem que configurar as credenciais puxando do "docker-compose.yml"
