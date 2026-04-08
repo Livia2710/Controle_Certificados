@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import EmailRoutes from "./routes/EmailRoutes.js";
 import Database from "./config/Database.js";
+import AuthRoutes from './routes/AuthRoutes.js';
 
 const app = express();
 
@@ -12,11 +13,10 @@ app.use(express.json());
 
 // apontando as rotas
 app.use('/email', EmailRoutes);
+app.use('/auth', AuthRoutes)
 
 async function bootsrap() {
     try {
-        console.log(process.env.DB_PASSWORD)
-
         // coloca o comando de sync do db
         await Database.sync();
         console.log("Deu bom na sincronização de tabelas");
