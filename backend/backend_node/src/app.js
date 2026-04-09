@@ -6,6 +6,7 @@ import Database from "./config/Database.js";
 import AuthRoutes from './routes/AuthRoutes.js';
 import { SyncAssosiationsDB } from './models/Index.js';
 import CoursesRoutes from './routes/CoursesRoutes.js';
+import transporter from './config/Mailer.js';
 
 const app = express();
 
