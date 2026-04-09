@@ -4,5 +4,6 @@ import CoursesController from "../controllers/CoursesController.js";
 const CoursesRoutes = express.Router();
 
 CoursesRoutes.get("/", CoursesController.getAllCoursesAndStudents);
+CoursesRoutes.get("/:course_id/students", CoursesController.getAllStudentsByCourse);
 
 export default CoursesRoutes;
