@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // apontando as rotas
-app.use('/email', EmailRoutes);
+app.use('/emails', EmailRoutes);
 app.use('/auth', AuthRoutes);
 app.use('/courses', CoursesRoutes);
 

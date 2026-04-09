@@ -3,6 +3,6 @@ import EmailController from "../controllers/EmailController.js";
 
 const EmailRoutes = express.Router();
 
-EmailRoutes.get("/logs", EmailController.getLogEmails);
+EmailRoutes.post("/", EmailController.sendEmails);
 
 export default EmailRoutes;
