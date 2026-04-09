@@ -5,6 +5,7 @@ import EmailRoutes from "./routes/EmailRoutes.js";
 import Database from "./config/Database.js";
 import AuthRoutes from './routes/AuthRoutes.js';
 import { SyncAssosiationsDB } from './models/Index.js';
+import CoursesRoutes from './routes/CoursesRoutes.js';
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(express.json());
 
 // apontando as rotas
 app.use('/email', EmailRoutes);
-app.use('/auth', AuthRoutes)
+app.use('/auth', AuthRoutes);
+app.use('/courses', CoursesRoutes);
 
 // chama função que arrumas as FK do banco de dados
 SyncAssosiationsDB();
