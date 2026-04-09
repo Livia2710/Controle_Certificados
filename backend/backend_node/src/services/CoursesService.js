@@ -2,9 +2,9 @@ import CoursesRepository from "../repository/CoursesRepository.js";
 import HttpException from "../utils/HttpException.js";
 
 class CoursesService {
-    async getAllCoursesAndStudents() {
+    async getAllCourses() {
         try {
-            const response = await CoursesRepository.findAllCoursesAndStudents();
+            const response = await CoursesRepository.findAllCourses();
 
             return response;
         } catch (err) {

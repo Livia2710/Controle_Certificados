@@ -1,9 +1,9 @@
 import CoursesService from "../services/CoursesService.js";
 
 class CoursesController {
-    async getAllCoursesAndStudents(req, res) {
+    async getAllCourses(req, res) {
         try {
-            const response = await CoursesService.getAllCoursesAndStudents();
+            const response = await CoursesService.getAllCourses();
 
             if(!response) {
                 return res.status(204).send();

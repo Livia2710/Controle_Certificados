@@ -2,7 +2,7 @@ import Courses from "../models/Courses.js";
 import Students from "../models/Students.js";
 
 class CoursesRepository {
-    async findAllCoursesAndStudents() {
+    async findAllCourses() {
         return await Courses.findAll();
     }
 
