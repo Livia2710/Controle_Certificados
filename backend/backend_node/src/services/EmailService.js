@@ -1,4 +1,5 @@
 import transporter from "../config/Mailer.js";
+import EmailLogsRepository from "../repository/EmailLogsRepository.js";
 import EmailTasksRepository from "../repository/EmailTasksRepository.js";
 import StudentsRepository from "../repository/StudentsRepository.js";
 import HttpException from "../utils/HttpException.js";
@@ -11,6 +12,9 @@ class EmailService {
             processed: 0
         })
 
+        // colocando a variavel de email fora do try para ser usado no catch de log tbm
+        let studentEmail =  "Student email not found";
+
         try {
             // inicia o processo com promisse para n lockar o end-point
             const emailPromises = data.students.map(async (id, index) => {
@@ -22,35 +26,36 @@ class EmailService {
                     const student = await StudentsRepository.findOneById(id);
                     if(!student) throw new Error(`Estudante com o id: "${id}" não foi encontrado.`);
                     
-                    await this.#inviteEmailsWithCertificate(student.email, student.name, data.project_name, data.qtd_hours)
+                    studentEmail = student.email;
+
+                    await this.#inviteEmailsWithCertificate(studentEmail, student.name, data.project_name, data.qtd_hours)
 
                     // atualiza o processo no DB
                     await EmailTasksRepository.updateProgress(task.id);
 
-                    return { id: id, status: 'SENT' };
+                    return { id: id, email: studentEmail, status: 'SENT' };
                 } catch(err) {
-                    return { id: id, status: 'FAILED', error: err.message };
+                    return { id: id, email: studentEmail, status: 'FAILED', error: err.message };
                 }
             });
 
             const results = await Promise.all(emailPromises);
 
             // filtra entre os q deu bom ou n
-            const successes = results.filter(r => r.status === 'SENT').map(r => r.id);
-            const failures = results.filter(r => r.status === 'FAILED').map(r => r.id);
+            const successes = results.filter(r => r.status === 'SENT').map(r => r.email);
+            const failures = results.filter(r => r.status === 'FAILED').map(r => r.email);
 
-            // mandaria a query para a tabela de logs, mas por enquanto é só um consolog
+            // cria o objeto de log e manda para o banco de dados
             const emailLog = ({
                 email_task_id: task.id,
-                delivered_successes: successes,
-                delivered_failures: failures,
+                success_delivered: successes,
+                failed_delivered: failures,
             })
-
-            console.table({emailLog});
+            await EmailLogsRepository.create(emailLog);
 
             await EmailTasksRepository.updateStatus(task.id, "COMPLETED");
         } catch(err) {
-            await EmailTasksRepository.updateStatus(task.id, 'ERROR');
+            await EmailTasksRepository.updateStatus(task.id, 'FAILED');
             console.log(err);
             throw err;
         }
