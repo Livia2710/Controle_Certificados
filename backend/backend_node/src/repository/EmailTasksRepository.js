@@ -26,6 +26,23 @@ class EmailTasksRepository {
             }
         )
     }
+
+    async findAllPaginated(limit, offset) {
+        const result = await EmailTasks.findAndCountAll({
+            include: [{
+                association: "log"
+            }],
+            limit: limit,
+            offset: offset,
+            order: [['createdAt', 'DESC']],
+            distinct: true
+        });
+
+        return {
+            data: result.rows,
+            totalPages: Math.ceil(result.count / limit)
+        };
+    }
 }
 
 export default new EmailTasksRepository();

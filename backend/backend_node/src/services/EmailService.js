@@ -61,6 +61,18 @@ class EmailService {
         }
     }
 
+    async getEmailsTasksPaginated(page = 1, limit = 10) {
+        try {
+            const offset = (page - 1) * limit;
+
+            const result = await EmailTasksRepository.findAllPaginated(limit, offset);
+
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async #inviteEmailsWithCertificate(studentEmail, studentName, projectName, amountHours) {
         try {
             const emailOptions = {
