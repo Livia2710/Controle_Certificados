@@ -147,6 +147,7 @@ class EmailService {
                                 </p>
 
                                 <div style="margin-top: 60px; display: inline-block;">
+                                    <p>Luyra Benini</p>
                                     <div style="width: 250px; height: 1px; background-color: #d1d5db; margin-bottom: 10px;"></div>
                                     <p style="font-size: 14px; color: #6b7280; margin: 0;">Instrutor Responsável</p>
                                 </div>
