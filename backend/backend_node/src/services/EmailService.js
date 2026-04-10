@@ -17,25 +17,12 @@ class EmailService {
 
                 // gambiarra para disparar um de cada vez, pra n tomar timeout do SMTP
                 await new Promise(resolve => setTimeout(resolve, index * 1000));
-                
+
                 try {
                     const student = await StudentsRepository.findOneById(id);
                     if(!student) throw new Error(`Estudante com o id: "${id}" não foi encontrado.`);
-
-                    const emailOptions = {
-                        from: '"Teste api envio de certificados" <revistacientificasenai@sp.senai.br>',
-                        to: student.email,
-                        subject: "Testando envio de email",
-                        html: `
-                            <div>
-                                <h1>Teste do html</h1>
-                                <p>Body request teste:<p>
-                                <p>Seu nome no banco de dados: ${student.name}</p>
-                            </div>
-                        `
-                    };
-                        
-                    await transporter.sendMail(emailOptions);
+                    
+                    await this.#inviteEmailsWithCertificate(student.email, student.name, data.project_name, data.qtd_hours)
 
                     // atualiza o processo no DB
                     await EmailTasksRepository.updateProgress(task.id);
@@ -64,6 +51,26 @@ class EmailService {
             await EmailTasksRepository.updateStatus(task.id, "COMPLETED");
         } catch(err) {
             await EmailTasksRepository.updateStatus(task.id, 'ERROR');
+            console.log(err);
+            throw err;
+        }
+    }
+
+    async #inviteEmailsWithCertificate(studentEmail, studentName, projectName, amountHours) {
+        try {
+            const emailOptions = {
+                from: '"Teste api envio de certificados" <revistacientificasenai@sp.senai.br>',
+                to: studentEmail,
+                subject: "Envio de certificado",
+                html: `
+                    <div>
+                        <p>Aluno ${studentName} ganhou ${amountHours} horas no projeto "${projectName}"<p>
+                    </div>
+                `
+            };
+                            
+            await transporter.sendMail(emailOptions);
+        } catch (err) {
             console.log(err);
             throw err;
         }
