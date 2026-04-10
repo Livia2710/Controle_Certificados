@@ -5,17 +5,19 @@ import HttpException from "../utils/HttpException.js";
 
 class EmailService {
     async sendEmails(data) {
-        try {
-            // cria a task antes de começar a operação
-            const task = await EmailTasksRepository.create({
-                total: data.students.length,
-                processed: 0
-            })
+        // cria a task antes de começar a operação
+        const task = await EmailTasksRepository.create({
+            total: data.students.length,
+            processed: 0
+        })
 
+        try {
             // inicia o processo com promisse para n lockar o end-point
             const emailPromises = data.students.map(async (id, index) => {
+
                 // gambiarra para disparar um de cada vez, pra n tomar timeout do SMTP
                 await new Promise(resolve => setTimeout(resolve, index * 1000));
+                
                 try {
                     const student = await StudentsRepository.findOneById(id);
                     if(!student) throw new Error(`Estudante com o id: "${id}" não foi encontrado.`);
