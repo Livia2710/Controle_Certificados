@@ -10,9 +10,10 @@ class EmailController {
             // usa o filtro do Zod para validar o body da request
             const data = BodySendEmailsDTO.parse(req.body);
 
-            const response = await EmailService.sendEmails(data);
+            // chama função do service mas sem o await pra rodar as promisses em segundo plano
+            EmailService.sendEmails(data);
 
-            return res.status(200).json(response);
+            return res.status(202).json({ message: "Email processing was started in background." });
         } catch (err) {
             if (err instanceof HttpException) {
                 return res.status(err.status).json({ erro: err.message });
