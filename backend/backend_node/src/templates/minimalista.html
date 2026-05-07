@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+  @font-face{
+    font-family: 'Dancing Script';
+    src: url(data:font/ttf;base64,{{dancingScript}}) format('truetype');
+  }
+
+  @font-face{
+    font-family: 'Playfair Display';
+    src: url(data:font/ttf;base64,{{playfair}}) format('truetype');
+    font-weight: bold;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f3f3f3;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    width: 1123px;
+    height: 794px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* BORDA */
+  .border {
+    position: absolute;
+    inset: 24px;
+    border: 2px solid #ac0c0b;
+    border-radius: 12px;
+    z-index: 0;
+  }
+
+  /* CONTEÚDO */
+  .content {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    padding: 60px 80px;
+    z-index: 2;
+  }
+
+  .logo {
+    width: 120px;
+    margin-bottom: 40px;
+  }
+
+  .center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 48px;
+    letter-spacing: 0.2em;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    color: #1a1a1a;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .name {
+    font-size: 56px;
+    color: #e30613;
+    font-family: 'Dancing Script', cursive;
+    white-space: nowrap;
+  }
+
+  .project {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .footer {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .line {
+    width: 320px;
+    border-top: 1px solid black;
+    margin-bottom: 6px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- BORDA -->
+  <div class="border"></div>
+
+  <div class="content">
+
+    <!-- LOGO -->
+    <img src="{{logo}}" class="logo" />
+
+    <!-- TEXTO -->
+    <div class="center">
+
+      <div class="title">CERTIFICADO</div>
+
+      <p class="text">Certificamos que</p>
+
+      <div class="name">{{name}}</div>
+
+      <p class="text">participou do projeto</p>
+
+      <div class="project">{{project}}</div>
+
+      <p class="text">
+        com carga horária de <strong>{{hours}} horas</strong>
+      </p>
+
+    </div>
+
+    <!-- ASSINATURA -->
+    <div class="footer">
+      <div class="line"></div>
+      <div class="footer-text">Instrutor Responsável</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
