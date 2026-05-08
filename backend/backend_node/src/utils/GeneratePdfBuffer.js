@@ -6,9 +6,8 @@ export const generatePdfBuffer = async (htmlContent) => {
     try {
         browser = await puppeteer.launch({
             headless: true,
-            executablePath: "C:\\Users\\livia\\.cache\\puppeteer\\chrome\\win64-147.0.7727.57\\chrome-win64\\chrome.exe",
             args: [
-                '--no-sandbox', 
+                '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-dev-shm-usage',
                 '--disable-gpu'
