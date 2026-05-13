@@ -18,15 +18,12 @@ class EmailService {
             user_id: userId
         })
 
-        // colocando a variavel de email fora do try para ser usado no catch de log tbm
-        let studentEmail =  "Student email not found";
-
         try {
-            // inicia o processo com promisse para n lockar o end-point
-            const emailPromises = data.students.map(async (id, index) => {
+            const results = [];
 
-                // gambiarra para disparar um de cada vez, pra n tomar timeout do SMTP
-                await new Promise(resolve => setTimeout(resolve, index * 1000));
+            // Usando for para arrumar o erro de timeout do gerador de pdf
+            for (const id of data.students) {
+                let studentEmail = "Student email not found";
 
                 try {
                     const student = await StudentsRepository.findOneById(id);
@@ -34,23 +31,28 @@ class EmailService {
                     
                     studentEmail = student.email;
 
-                    await this.#inviteEmailsWithCertificate(studentEmail, student.name, data.project_name, data.qtd_hours, data.template)
+                    await this.#inviteEmailsWithCertificate(studentEmail, student.name, data.project_name, data.qtd_hours, data.template);
 
-                    // atualiza o processo no DB
                     await EmailTasksRepository.updateProgress(task.id);
 
-                    return { id: id, email: studentEmail, status: 'SENT' };
+                    results.push({ id: id, email: studentEmail, status: 'SENT' });
+                    
+                    await new Promise(resolve => setTimeout(resolve, 1000)); 
+
                 } catch(err) {
-                    console.log("ERRO NO LOOP:", err);
-                    return { id: id, email: studentEmail, status: 'FAILED', error: err.message };
+                    console.log(`DEU MERDA NO LOOP, student_id: ${id}:`, err);
+                    results.push({ id: id, email: studentEmail, status: 'FAILED', error: err.message });
                 }
-            });
+            }
 
-            const results = await Promise.all(emailPromises);
-
-            // filtra entre os q deu bom ou n
             const successes = results.filter(r => r.status === 'SENT').map(r => r.email);
             const failures = results.filter(r => r.status === 'FAILED').map(r => r.email);
+
+            console.log(`Emails que deram bons:`);
+            console.log(successes);
+
+            console.log(`Emails que deram ruim:`);
+            console.log(failures);
 
             // cria o objeto de log e manda para o banco de dados
             const emailLog = ({
@@ -63,7 +65,7 @@ class EmailService {
             await EmailTasksRepository.updateStatus(task.id, "COMPLETED");
         } catch(err) {
             await EmailTasksRepository.updateStatus(task.id, 'FAILED');
-            console.log(err);
+            console.log("ERRO FATAL NA TASK:", err);
             throw err;
         }
     }

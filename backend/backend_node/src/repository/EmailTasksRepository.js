@@ -29,9 +29,6 @@ class EmailTasksRepository {
 
     async findAllPaginated(limit, offset, userId) {
         const result = await EmailTasks.findAndCountAll({
-            where: {
-                user_id: userId
-            },
             include: [{
                 association: "log"
             }],
