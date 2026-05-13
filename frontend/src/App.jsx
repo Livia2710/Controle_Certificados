@@ -10,8 +10,15 @@ export default function App() {
   const [logado, setLogado] = useState(false);
   const [user, setUser] = useState(null);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     const fetchUser = async () => {
       try {
@@ -19,16 +26,21 @@ export default function App() {
           headers: { Authorization: `Bearer ${token}` }
         });
 
+        if (!response.ok) throw new Error("Token inválido");
+
         const data = await response.json();
         setUser(data);
         setLogado(true);
       } catch (err) {
         console.error(err);
         setLogado(false);
+        localStorage.removeItem("token");
+      } finally {
+        setLoading(false); 
       }
     };
 
-    if (token) fetchUser();
+    fetchUser();
   }, []);
 
   const handleLogin = async (email, password) => {
@@ -49,6 +61,7 @@ export default function App() {
     }
 
     localStorage.setItem("token", data.token);
+
     // busca o user imediatamente
     const me = await fetch("http://localhost:5000/auth/me", {
       headers: { Authorization: `Bearer ${data.token}` }
@@ -67,7 +80,16 @@ export default function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setLogado(false);
+      setLogado(false);
+      setUser(null);
+    };
+
+    if (loading) {
+      return (
+        <div className="flex h-screen w-screen items-center justify-center">
+          <p>Carregando...</p> 
+        </div>
+      );
   };
 
   return (
@@ -75,7 +97,10 @@ export default function App() {
       <Routes>
 
         {/* PUBLIC */}
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route 
+          path="/login" 
+          element={!logado ? <Login onLogin={handleLogin} /> : <Navigate to="/" />}
+        />
 
         {/* PROTECTED */}
         {logado && user ? (
