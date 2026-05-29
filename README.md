@@ -20,8 +20,6 @@ A aplicação permite que docentes gerenciem alunos, filtrem informações e ger
 
 https://github.com/user-attachments/assets/d7708a9e-8d96-46eb-a73a-fa23bb7ffe76
 
-<video src="frontend/preview/Controle-Certificados-Video.mp4" controls width="100%"></video>
-
 ---
 
 ## Funcionalidades
