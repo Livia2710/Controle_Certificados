@@ -6,7 +6,9 @@ import Database from "./config/Database.js";
 import AuthRoutes from './routes/AuthRoutes.js';
 import { SyncAssosiationsDB } from './models/Index.js';
 import CoursesRoutes from './routes/CoursesRoutes.js';
+import StudentsRoutes from "./routes/StudentsRoutes.js";
 import transporter from './config/Mailer.js';
+import ProjectsRoutes from './routes/ProjectsRoutes.js';
 
 const app = express();
 
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use('/emails', EmailRoutes);
 app.use('/auth', AuthRoutes);
 app.use('/courses', CoursesRoutes);
+app.use("/students", StudentsRoutes);
+app.use("/projects", ProjectsRoutes);
 
 // chama função que arrumas as FK do banco de dados
 SyncAssosiationsDB();

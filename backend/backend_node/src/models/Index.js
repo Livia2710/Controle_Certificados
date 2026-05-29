@@ -2,6 +2,8 @@ import Courses from "./Courses.js";
 import EmailLogs from "./EmailLogs.js";
 import EmailTasks from "./EmailTasks.js";
 import Students from "./Students.js";
+import Users from "./Users.js";
+import Projects from "./Projects.js";
 
 export function SyncAssosiationsDB() {
     // um curso tem vários alunos, um aluno possui um curso
@@ -11,4 +13,8 @@ export function SyncAssosiationsDB() {
     // permite q o log puxe a taks, e que a task puxe o log
     EmailLogs.belongsTo(EmailTasks, { foreignKey: "email_task_id", as: "email_task" });
     EmailTasks.hasOne(EmailLogs, { foreignKey: "email_task_id", as: "log" });
+
+    // USER → PROJECT
+    Users.hasMany(Projects, { foreignKey: "user_id", as: "projects" });
+    Projects.belongsTo(Users, { foreignKey: "user_id", as: "user" });
 }

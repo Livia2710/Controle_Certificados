@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<style>
+
+  @font-face{
+    font-family: 'Dancing Script';
+    src: url(data:font/ttf;base64,{{dancingScript}}) format('truetype');
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #F7F1E1;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh ;
+  }
+
+  .container {
+    width: 1123px;
+    height: 794px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+  }
+
+  /* BORDA (MOLDURA) */
+  .border-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    }
+
+   .border-img svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    }
+
+  /* CONTEÚDO */
+  .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 60px;
+
+  }
+
+  .logo {
+    width: 130px;
+    margin-bottom: 40px;
+  }
+
+  .center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 48px;
+    letter-spacing: 0.2em;
+    color: #1a1a1a;
+    font-family: serif;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  .name {
+    font-size: 60px;
+    color: #ac0c0b;
+    font-family: 'Dancing Script', cursive;
+    white-space: nowrap;
+  }
+
+  .project {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .line {
+    width: 380px;
+    border-top: 2px solid black;
+    margin-bottom: 6px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- MOLDURA -->
+  <div class="border-img">{{borderImage}}</div>
+
+  <div class="content">
+
+    <!-- LOGO -->
+    <img src="{{logo}}" class="logo" />
+
+    <!-- TEXTO -->
+    <div class="center">
+
+      <div class="title">CERTIFICADO</div>
+
+      <p class="text italic">Certificamos que</p>
+
+      <div class="name">{{name}}</div>
+
+      <p class="text">participou do projeto</p>
+
+      <div class="project">{{project}}</div>
+
+      <p class="text">
+        com carga horária de <strong>{{hours}} horas</strong>
+      </p>
+
+    </div>
+
+    <!-- ASSINATURA -->
+    <div class="footer">
+      <div class="line"></div>
+      <div class="footer-text">Instrutor Responsável</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

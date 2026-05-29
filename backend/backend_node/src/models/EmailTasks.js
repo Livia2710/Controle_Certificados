@@ -8,6 +8,7 @@ const EmailTasks = Database.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: false,
         },
         status: {
             type: DataTypes.ENUM("FAILED", "PROCESSING", "COMPLETED"),

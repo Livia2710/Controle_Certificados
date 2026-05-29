@@ -11,7 +11,7 @@ class EmailController {
             const data = BodySendEmailsDTO.parse(req.body);
 
             // chama função do service mas sem o await pra rodar as promisses em segundo plano
-            EmailService.sendEmails(data);
+            EmailService.sendEmails(data, req.user.id);
 
             return res.status(202).json({ message: "Email processing was started in background." });
         } catch (err) {
@@ -32,7 +32,7 @@ class EmailController {
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
 
-            const response = await EmailService.getEmailsTasksPaginated(page, limit);
+            const response = await EmailService.getEmailsTasksPaginated(page, limit, req.user.id);
             if(!response || response.length == 0) {
                 return res.status(204).send();
             }

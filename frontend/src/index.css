@@ -17,6 +17,16 @@
 }
 
 
+/* Esconde scrollbar mas mantém scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 body {
   margin: 0;
   background-color: var(--bg);

@@ -12,7 +12,7 @@ export function VerifyAuthenticationToken(req, res, next) {
 
     try {
         // tenta decodificar o token usando a chave no .env
-        const decoded = jwt.decode(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // manda o obj com as infos do user para os controllers se precisar usar para algo
         req.user = decoded;

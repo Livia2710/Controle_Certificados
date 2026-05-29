@@ -45,6 +45,22 @@ class AuthController {
             return res.status(500).json({ erro: `An error occurred while trying to register the user: ${err.message}` });
         }
     }
+
+    async me(req, res) {
+        try {
+            const user = req.user;
+
+            return res.status(200).json({
+                id: user.id,
+                username: user.username,
+                email: user.email
+            });
+        } catch (err) {
+            return res.status(500).json({
+                erro: `Error while fetching user: ${err.message}`
+            });
+        }
+    }
 }
 
 export default new AuthController();
