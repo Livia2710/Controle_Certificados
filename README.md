@@ -18,7 +18,7 @@ A aplicação permite que docentes gerenciem alunos, filtrem informações e ger
 
 ## Preview
 
-<video src="./frontend/preview/Controle-Certificados-Video.mp4" controls width="100%"></video>
+<video src="frontend/preview/Controle-Certificados-Video.mp4" controls width="100%"></video>
 
 ---
 
