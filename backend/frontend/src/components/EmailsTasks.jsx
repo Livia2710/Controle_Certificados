@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { API_URL } from "../config/api";
 
 export default function EmailTasks({ token }) {
   const [tasks, setTasks] = useState([]);
@@ -9,7 +10,7 @@ export default function EmailTasks({ token }) {
 
   const fetchTasks = async (pagina = 1) => {
     try {
-      const res = await fetch(`http://localhost:5000/emails/getTasks?page=${pagina}&limit=5`, {
+      const res = await fetch(`${API_URL}/emails/getTasks?page=${pagina}&limit=5`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

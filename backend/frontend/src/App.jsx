@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Historico from "./pages/Historico";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { API_URL } from "./config/api";
 
 export default function App() {
   const [logado, setLogado] = useState(false);
@@ -22,7 +23,7 @@ export default function App() {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:5000/auth/me", {
+        const response = await fetch(`${API_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -45,7 +46,7 @@ export default function App() {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -63,7 +64,7 @@ export default function App() {
     localStorage.setItem("token", data.token);
 
     // busca o user imediatamente
-    const me = await fetch("http://localhost:5000/auth/me", {
+    const me = await fetch(`${API_URL}/auth/me`, {
       headers: { Authorization: `Bearer ${data.token}` }
     });
 

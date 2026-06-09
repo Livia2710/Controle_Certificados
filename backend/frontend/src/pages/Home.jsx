@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import AppLayout from "../layouts/AppLayout";
 import TemplateSelector from "../components/TemplateSelector";
 import CertificatePreview from "../components/CertificatePreview";
+import { API_URL } from "../config/api";
 
 export default function Home({ onLogout, username }) {
   const [cursos, setCursos] = useState([]);
@@ -26,7 +27,7 @@ export default function Home({ onLogout, username }) {
 
   const fetchCursos = useCallback(async () => {
     try {
-      const res = await fetch("http://localhost:5000/courses", {
+      const res = await fetch(`${API_URL}/courses`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -37,8 +38,8 @@ export default function Home({ onLogout, username }) {
   const fetchAlunos = useCallback(async (cursoId = "") => {
     try {
       const url = cursoId 
-        ? `http://localhost:5000/courses/${cursoId}/students` 
-        : "http://localhost:5000/students";
+        ? `${API_URL}/courses/${cursoId}/students` 
+        : `${API_URL}/students`;
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -51,7 +52,7 @@ export default function Home({ onLogout, username }) {
 
   const fetchProjetos = useCallback(async () => {
   try {
-    const res = await fetch("http://localhost:5000/projects", {
+    const res = await fetch(`${API_URL}/projects`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -80,7 +81,7 @@ export default function Home({ onLogout, username }) {
   if (!inputProjeto.trim()) return;
 
   try {
-    const res = await fetch("http://localhost:5000/projects", {
+    const res = await fetch(`${API_URL}/projects`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +105,7 @@ export default function Home({ onLogout, username }) {
 
   const removerProjeto = async (id) => {
   try {
-    await fetch(`http://localhost:5000/projects/${id}`, {
+    await fetch(`${API_URL}/projects/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
@@ -135,7 +136,7 @@ console.log(inputProjeto);
     setStatus("loading");
 
     try {
-      const res = await fetch("http://localhost:5000/emails", {
+      const res = await fetch(`${API_URL}/emails`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

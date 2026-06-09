@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
+import { API_URL } from "../config/api";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -11,7 +12,7 @@ export default function Register() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
