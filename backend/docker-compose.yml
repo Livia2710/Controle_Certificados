@@ -27,6 +27,15 @@ services:
     restart: always
     ports:
       - "5000:5000"
+    command: >
+      sh -c "
+      echo 'Aguardando socket do MySQL responder...' &&
+      while ! timeout 1 bash -c 'cat < /dev/null > /dev/tcp/mysql_db/3306' 2>/dev/null; do
+        sleep 1
+      done &&
+      echo 'o fdp do MySQL aceitou a conexao, iniciando a API...' &&
+      npm run dev
+      "
     depends_on:
       mysql_db:
         condition: service_healthy
