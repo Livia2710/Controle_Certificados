@@ -39,6 +39,8 @@ services:
     build: ./frontend
     container_name: react_app
     restart: always
+    ports:
+      - "5173:5173"
     volumes:
       - /app/node_modules
     depends_on:
