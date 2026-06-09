@@ -125,7 +125,7 @@ class EmailService {
             const pdfBuffer = await generatePdfBuffer(html);
 
             const emailOptions = {
-                from: '"Teste api envio de certificados" <revistacientificasenai@sp.senai.br>',
+                from: '"Envio de certificados - Horas de Extensão" <revistacientificasenai@sp.senai.br>',
                 to: studentEmail,
                 subject: `Envio de certificado de horas - ${projectName}`,
                 html: `<p>Olá! Segue em anexo o seu certificado.</p>`,
