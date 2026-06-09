@@ -34,6 +34,17 @@ services:
         condition: service_healthy
     networks:
       - app_network
+  
+  frontend_react:
+    build: ./frontend
+    container_name: react_app
+    restart: always
+    volumes:
+      - /app/node_modules
+    depends_on:
+      - backend_node
+    networks:
+      - app_network
 
 volumes:
   mysql_data:
